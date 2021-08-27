@@ -1,14 +1,17 @@
-import React from "react";
+import React, { Fragment } from "react";
 import HeaderCartButton from "./HeaderCartButton";
 
 import classes from "./Header.module.css";
 
-const Header = () => {
+const Header = (props) => {
     return (
-        <>
+        <Fragment>
             <div className={classes.header}>
                 <h2>ReactMeals</h2>
-                <HeaderCartButton />
+                <HeaderCartButton
+                    onModalStateNext={props.onModalState}
+                    cartMeals={props.cartMeals}
+                />
             </div>
             <div className={classes.mainImage}>
                 <img
@@ -16,7 +19,7 @@ const Header = () => {
                     alt="Meals atop a Dining Table"
                 />
             </div>
-        </>
+        </Fragment>
     );
 };
 
