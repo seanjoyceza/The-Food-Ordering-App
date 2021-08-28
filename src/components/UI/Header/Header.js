@@ -3,15 +3,12 @@ import HeaderCartButton from "./HeaderCartButton";
 
 import classes from "./Header.module.css";
 
-const Header = (props) => {
+const Header = () => {
     return (
         <Fragment>
             <div className={classes.header}>
                 <h2>ReactMeals</h2>
-                <HeaderCartButton
-                    onModalStateNext={props.onModalState}
-                    cartMeals={props.cartMeals}
-                />
+                <HeaderCartButton />
             </div>
             <div className={classes.mainImage}>
                 <img

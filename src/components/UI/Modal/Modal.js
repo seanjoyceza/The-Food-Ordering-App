@@ -1,20 +1,17 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext } from "react";
+import CartContext from "../../../store/cart-context";
 import Cart from "../../Cart/Cart";
 
 import classes from "./Modal.module.css";
 
 const Modal = (props) => {
-    const onClickHandler = () => {
-        props.onModalState();
-    };
+    const ctx = useContext(CartContext);
+
     return (
         <Fragment>
-            <div className={classes.backdrop} onClick={onClickHandler}></div>
+            <div className={classes.backdrop} onClick={ctx.modalState}></div>
             <div className={classes.modal}>
-                <Cart
-                    cartMeals={props.cartMeals}
-                    onModalChange={onClickHandler}
-                />
+                <Cart />
             </div>
         </Fragment>
     );

@@ -1,17 +1,20 @@
-import React, { Fragment } from "react";
+import React, { useContext, Fragment } from "react";
 import CartItem from "./CartItem";
+import CartContext from "../../store/cart-context";
 
 import classes from "./Cart.module.css";
-//ADD CART ITEMS HERE INSTEAD OF MEAL ITEMS
-const Cart = (props) => {
+
+const Cart = () => {
     const orderHandler = () => {
         console.log("Ordering...");
     };
 
+    const ctx = useContext(CartContext);
+
     return (
         <Fragment>
             <div className={classes.cartItems}>
-                {props.cartMeals.map((meal) => {
+                {ctx.cartMeals.map((meal) => {
                     return (
                         <CartItem
                             key={Math.random()}
@@ -28,7 +31,7 @@ const Cart = (props) => {
                 <div>$88.99</div>
             </div>
             <div className={classes.actions}>
-                <button onClick={props.onModalChange}>Close</button>
+                <button onClick={ctx.modalState}>Close</button>
                 <button onClick={orderHandler}>Order</button>
             </div>
         </Fragment>

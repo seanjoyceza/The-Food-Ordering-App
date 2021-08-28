@@ -1,20 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import CartIcon from "../CartIcon";
+import CartContext from "../../../store/cart-context";
 
 import classes from "./HeaderCartButton.module.css";
 
-const HeaderCartButton = (props) => {
-    const onClickHandler = (event) => {
-        props.onModalStateNext();
-    };
+const HeaderCartButton = () => {
+    const ctx = useContext(CartContext);
 
     return (
-        <button className={classes.button} onClick={onClickHandler}>
+        <button className={classes.button} onClick={ctx.modalState}>
             <span className={classes.icon}>
                 <CartIcon />
             </span>
             <span>Your Cart</span>
-            <span className={classes.badge}>{props.cartMeals.length}</span>
+            <span className={classes.badge}>
+                {ctx.cartMeals.length ? ctx.cartMeals.length : 0}
+            </span>
         </button>
     );
 };

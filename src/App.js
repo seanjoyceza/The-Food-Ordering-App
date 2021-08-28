@@ -1,8 +1,10 @@
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 import AvailableMeals from "./components/Meals/AvailableMeals";
 import MealsSummary from "./components/Meals/MealsSummary";
 import Header from "./components/UI/Header/Header";
 import Modal from "./components/UI/Modal/Modal";
+import CartContext from "./store/cart-context";
+import InputContext from "./store/input-context";
 
 const DUMMY_MEALS = [
     {
@@ -33,21 +35,19 @@ const DUMMY_MEALS = [
 
 const CART_MEALS = [
     {
-        name: "Sushi",
-        description: "Finest fish and veggies",
+        id: Math.random(),
+        name: "Lorem",
+        description: "Lorem ipsum",
         price: 22.99,
-    },
-    {
-        name: "Schnitzel",
-        description: "A german specialty!",
-        price: 16.5,
     },
 ];
 
 function App() {
     const [modalState, setModalState] = useState(false);
+    const [cartMeals, setCartMeals] = useState(CART_MEALS);
+    const [enteredAmount, setEnteredAmount] = useState(1);
 
-    const setModalStateHandler = () => {
+    const modalStateHandler = () => {
         setModalState(() => {
             if (modalState === true) {
                 return false;
@@ -57,24 +57,30 @@ function App() {
         });
     };
 
+    //NEXT -> MOVE STATE LOGIC OUT OF APP.JS COMPONENT
     return (
-        <Fragment>
-            {modalState && (
-                <Modal
-                    cartMeals={CART_MEALS}
-                    onModalState={setModalStateHandler}
-                />
-            )}
-            <Header
-                onModalState={setModalStateHandler}
-                cartMeals={CART_MEALS}
-            />
-            <main>
-                <MealsSummary />
-                <br />
-                <AvailableMeals meals={DUMMY_MEALS} />
-            </main>
-        </Fragment>
+        <InputContext.Provider
+            value={{
+                enteredAmount: enteredAmount,
+                setEnteredAmount: setEnteredAmount,
+            }}
+        >
+            <CartContext.Provider
+                value={{
+                    cartMeals: cartMeals,
+                    modalState: modalStateHandler,
+                    setCartMeals: setCartMeals,
+                }}
+            >
+                {modalState && <Modal />}
+                <Header />
+                <main>
+                    <MealsSummary />
+                    <br />
+                    <AvailableMeals meals={DUMMY_MEALS} />
+                </main>
+            </CartContext.Provider>
+        </InputContext.Provider>
     );
 }
 
