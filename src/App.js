@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { Fragment, useContext } from "react";
 import AvailableMeals from "./components/Meals/AvailableMeals";
 import MealsSummary from "./components/Meals/MealsSummary";
 import Header from "./components/UI/Header/Header";
 import Modal from "./components/UI/Modal/Modal";
 import CartContext from "./store/cart-context";
-import InputContext from "./store/input-context";
 
 const DUMMY_MEALS = [
     {
@@ -33,54 +32,19 @@ const DUMMY_MEALS = [
     },
 ];
 
-const CART_MEALS = [
-    {
-        id: Math.random(),
-        name: "Lorem",
-        description: "Lorem ipsum",
-        price: 22.99,
-    },
-];
-
 function App() {
-    const [modalState, setModalState] = useState(false);
-    const [cartMeals, setCartMeals] = useState(CART_MEALS);
-    const [enteredAmount, setEnteredAmount] = useState(1);
+    const cartCtx = useContext(CartContext);
 
-    const modalStateHandler = () => {
-        setModalState(() => {
-            if (modalState === true) {
-                return false;
-            } else {
-                return true;
-            }
-        });
-    };
-
-    //NEXT -> MOVE STATE LOGIC OUT OF APP.JS COMPONENT
     return (
-        <InputContext.Provider
-            value={{
-                enteredAmount: enteredAmount,
-                setEnteredAmount: setEnteredAmount,
-            }}
-        >
-            <CartContext.Provider
-                value={{
-                    cartMeals: cartMeals,
-                    modalState: modalStateHandler,
-                    setCartMeals: setCartMeals,
-                }}
-            >
-                {modalState && <Modal />}
-                <Header />
-                <main>
-                    <MealsSummary />
-                    <br />
-                    <AvailableMeals meals={DUMMY_MEALS} />
-                </main>
-            </CartContext.Provider>
-        </InputContext.Provider>
+        <Fragment>
+            {cartCtx.modalState && <Modal />}
+            <Header />
+            <main>
+                <MealsSummary />
+                <br />
+                <AvailableMeals meals={DUMMY_MEALS} />
+            </main>
+        </Fragment>
     );
 }
 

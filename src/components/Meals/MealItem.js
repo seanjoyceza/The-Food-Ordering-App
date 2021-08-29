@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import MealItemForm from "./MealItemForm";
-import InputContext from "../../store/input-context";
 import CartContext from "../../store/cart-context";
+import InputContext from "../../store/input-context";
 
 import classes from "./MealItem.module.css";
 
@@ -11,19 +11,42 @@ const MealItem = (props) => {
 
     const submitHandler = (event) => {
         event.preventDefault();
-        console.log(ctx.enteredAmount);
-        console.log(props.name);
-        console.log(cartCtx.cartMeals);
+    };
+
+    const clickHandler = (event) => {
         cartCtx.setCartMeals((prevState) => {
-            return [
-                ...prevState,
-                {
-                    id: Math.random(),
-                    name: props.name,
-                    description: props.description,
-                    price: props.price,
-                },
-            ];
+            if (prevState.length === 0) {
+                return [
+                    ...prevState,
+                    {
+                        id: Math.random(),
+                        name: props.name,
+                        description: props.description,
+                        price: props.price,
+                        amount: ctx.enteredAmount,
+                    },
+                ];
+            } else {
+                for (let i = 0; i < prevState.length; i++) {
+                    if (prevState[i].name === props.name) {
+                        prevState[i].amount =
+                            parseInt(prevState[i].amount) +
+                            parseInt(ctx.enteredAmount);
+                        return prevState;
+                    } else {
+                        return [
+                            ...prevState,
+                            {
+                                id: Math.random(),
+                                name: props.name,
+                                description: props.description,
+                                price: props.price,
+                                amount: ctx.enteredAmount,
+                            },
+                        ];
+                    }
+                }
+            }
         });
     };
 
@@ -34,7 +57,10 @@ const MealItem = (props) => {
                 <p className={classes.description}>{props.description}</p>
                 <p className={classes.price}>${props.price}</p>
             </span>
-            <MealItemForm submitHandler={submitHandler} />
+            <MealItemForm
+                submitHandler={submitHandler}
+                cickHandler={clickHandler}
+            />
         </div>
     );
 };

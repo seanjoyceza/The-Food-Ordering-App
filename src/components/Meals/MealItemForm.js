@@ -25,7 +25,7 @@ const MealItemForm = (props) => {
                 ></input>
             </div>
 
-            <button>+ Add</button>
+            <button onClick={props.cickHandler}>+ Add</button>
         </form>
     );
 };
