@@ -12,12 +12,12 @@ const MealItem = (props) => {
     const submitHandler = (event) => {
         event.preventDefault();
     };
-
+    //FINALISE THE TOTAL AMOUNT IN THE CART - THIS IS DONE FOR THE FIRST ITEM TO BE ADDED
     const clickHandler = (event) => {
         cartCtx.setCartMeals((prevState) => {
             if (prevState.length === 0) {
+                cartCtx.setPriceState(props.price * ctx.enteredAmount);
                 return [
-                    ...prevState,
                     {
                         id: Math.random(),
                         name: props.name,
@@ -27,24 +27,28 @@ const MealItem = (props) => {
                     },
                 ];
             } else {
+                let counter = "NOT_IN_LIST";
                 for (let i = 0; i < prevState.length; i++) {
                     if (prevState[i].name === props.name) {
+                        counter = "IN_LIST";
                         prevState[i].amount =
-                            parseInt(prevState[i].amount) +
-                            parseInt(ctx.enteredAmount);
+                            prevState[i].amount + ctx.enteredAmount;
                         return prevState;
                     } else {
-                        return [
-                            ...prevState,
-                            {
-                                id: Math.random(),
-                                name: props.name,
-                                description: props.description,
-                                price: props.price,
-                                amount: ctx.enteredAmount,
-                            },
-                        ];
+                        counter = "NOT_IN_LIST";
                     }
+                }
+                if (counter === "NOT_IN_LIST") {
+                    return [
+                        ...prevState,
+                        {
+                            id: Math.random(),
+                            name: props.name,
+                            description: props.description,
+                            price: props.price,
+                            amount: ctx.enteredAmount,
+                        },
+                    ];
                 }
             }
         });

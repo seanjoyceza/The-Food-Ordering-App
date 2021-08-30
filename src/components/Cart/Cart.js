@@ -4,7 +4,7 @@ import CartContext from "../../store/cart-context";
 
 import classes from "./Cart.module.css";
 
-const Cart = () => {
+const Cart = (props) => {
     const orderHandler = () => {
         console.log("Ordering...");
     };
@@ -30,7 +30,9 @@ const Cart = () => {
             </div>
             <div className={classes.total}>
                 {cartCtx.cartMeals.length > 0 && <div>Total Amount</div>}
-                {cartCtx.cartMeals.length > 0 && <div>€22.99</div>}
+                {cartCtx.cartMeals.length > 0 && (
+                    <div>€ {cartCtx.priceState}</div>
+                )}
             </div>
             <div className={classes.actions}>
                 <button onClick={cartCtx.modalStateHandler}>Close</button>

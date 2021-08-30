@@ -4,6 +4,8 @@ const CART_MEALS = [];
 
 const CartContext = React.createContext({
     cartMeals: [],
+    priceState: 0,
+    setPriceState: () => {},
     modalState: () => {},
     setCartMeals: () => {},
     modalStateHandler: () => {},
@@ -12,12 +14,23 @@ const CartContext = React.createContext({
 export const CartContextProvider = (props) => {
     const [modalState, setModalState] = useState(false);
     const [cartMeals, setCartMeals] = useState(CART_MEALS);
+    const [priceState, setPriceState] = useState(0);
+
+    useEffect(() => {
+        const showModal = localStorage.getItem("showModal");
+
+        if (showModal === "1") {
+            setModalState(true);
+        }
+    }, []);
 
     const modalStateHandler = () => {
         setModalState(() => {
             if (modalState === true) {
+                localStorage.removeItem("showModal");
                 return false;
             } else {
+                localStorage.setItem("showModal", "1");
                 return true;
             }
         });
@@ -26,6 +39,8 @@ export const CartContextProvider = (props) => {
     return (
         <CartContext.Provider
             value={{
+                priceState: priceState,
+                setPriceState: setPriceState,
                 cartMeals: cartMeals,
                 modalStateHandler: modalStateHandler,
                 modalState: modalState,
