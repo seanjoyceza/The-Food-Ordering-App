@@ -10,7 +10,6 @@ const Cart = (props) => {
     };
 
     const cartCtx = useContext(CartContext);
-
     return (
         <Fragment>
             <div className={classes.cartItems}>

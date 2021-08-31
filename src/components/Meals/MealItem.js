@@ -12,12 +12,11 @@ const MealItem = (props) => {
     const submitHandler = (event) => {
         event.preventDefault();
     };
-    //FINALISE THE TOTAL AMOUNT IN THE CART - THIS IS DONE FOR THE FIRST ITEM TO BE ADDED
-    const clickHandler = (event) => {
+
+    const clickHandler = () => {
         cartCtx.setCartMeals((prevState) => {
             if (prevState.length === 0) {
-                cartCtx.setPriceState(props.price * ctx.enteredAmount);
-                return [
+                const newState = [
                     {
                         id: Math.random(),
                         name: props.name,
@@ -26,20 +25,25 @@ const MealItem = (props) => {
                         amount: ctx.enteredAmount,
                     },
                 ];
+                cartCtx.updateTotal(newState);
+                cartCtx.updateCartNumber(newState);
+                return newState;
             } else {
                 let counter = "NOT_IN_LIST";
                 for (let i = 0; i < prevState.length; i++) {
                     if (prevState[i].name === props.name) {
                         counter = "IN_LIST";
                         prevState[i].amount =
-                            prevState[i].amount + ctx.enteredAmount;
+                            prevState[i].amount + parseInt(ctx.enteredAmount);
+                        cartCtx.updateTotal(prevState);
+                        cartCtx.updateCartNumber(prevState);
                         return prevState;
                     } else {
                         counter = "NOT_IN_LIST";
                     }
                 }
                 if (counter === "NOT_IN_LIST") {
-                    return [
+                    const newState = [
                         ...prevState,
                         {
                             id: Math.random(),
@@ -49,6 +53,9 @@ const MealItem = (props) => {
                             amount: ctx.enteredAmount,
                         },
                     ];
+                    cartCtx.updateTotal(newState);
+                    cartCtx.updateCartNumber(newState);
+                    return newState;
                 }
             }
         });

@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
+import CartContext from "../../store/cart-context";
 
 import classes from "./CartItem.module.css";
 
 const CartItem = (props) => {
+    const cartCtx = useContext(CartContext);
+
     return (
         <li className={classes["cart-item"]}>
             <div>
@@ -13,8 +16,8 @@ const CartItem = (props) => {
                 </div>
             </div>
             <div className={classes.actions}>
-                <button>+</button>
-                <button>-</button>
+                <button onClick={cartCtx.onAddHandler}>+</button>
+                <button onClick={cartCtx.onRemoveHandler}>-</button>
             </div>
         </li>
     );
