@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import MealItemForm from "./MealItemForm";
-import CartContext from "../../store/cart-context";
-import InputContext from "../../store/input-context";
+import CartContext from "../../../store/cart-context";
+import InputContext from "../../../store/input-context";
 
 import classes from "./MealItem.module.css";
 
 const MealItem = (props) => {
+    const price = `$${props.price}`;
     const cartCtx = useContext(CartContext);
     const ctx = useContext(InputContext);
 
@@ -62,17 +63,18 @@ const MealItem = (props) => {
     };
 
     return (
-        <div className={classes.meal}>
-            <span>
+        <li className={classes.meal}>
+            <div>
                 <h3>{props.name}</h3>
                 <p className={classes.description}>{props.description}</p>
-                <p className={classes.price}>${props.price}</p>
-            </span>
+                <p className={classes.price}>{price}</p>
+            </div>
             <MealItemForm
+                id={props.id}
                 submitHandler={submitHandler}
                 cickHandler={clickHandler}
             />
-        </div>
+        </li>
     );
 };
 

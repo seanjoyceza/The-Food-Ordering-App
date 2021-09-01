@@ -43,7 +43,7 @@ export const CartContextProvider = (props) => {
     const updateCartNumber = (meals) => {
         let totalAmount = 0;
         for (let meal of meals) {
-            totalAmount += meal.amount;
+            totalAmount += parseInt(meal.amount);
         }
         setCartNumber(totalAmount);
         return;
