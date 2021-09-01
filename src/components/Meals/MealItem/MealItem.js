@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import MealItemForm from "./MealItemForm";
 import CartContext from "../../../store/cart-context";
 import InputContext from "../../../store/input-context";
+import UserCartContext from "../../../store/user-cart-context";
 
 import classes from "./MealItem.module.css";
 
@@ -9,10 +10,7 @@ const MealItem = (props) => {
     const price = `$${props.price}`;
     const cartCtx = useContext(CartContext);
     const ctx = useContext(InputContext);
-
-    const submitHandler = (event) => {
-        event.preventDefault();
-    };
+    const userCartCtx = useContext(UserCartContext);
 
     const clickHandler = () => {
         cartCtx.setCartMeals((prevState) => {
@@ -62,6 +60,15 @@ const MealItem = (props) => {
         });
     };
 
+    const addToCartHandler = (amount) => {
+        userCartCtx.addItem({
+            id: props.id,
+            name: props.name,
+            amount: amount,
+            price: props.price,
+        });
+    };
+
     return (
         <li className={classes.meal}>
             <div>
@@ -71,8 +78,8 @@ const MealItem = (props) => {
             </div>
             <MealItemForm
                 id={props.id}
-                submitHandler={submitHandler}
                 cickHandler={clickHandler}
+                onAddtoCart={addToCartHandler}
             />
         </li>
     );
