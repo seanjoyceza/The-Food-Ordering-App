@@ -30,6 +30,58 @@ const cartReducer = (state, action) => {
         }
 
         return { items: updatedItems, totalAmount: updatedTotalAmount };
+    } else if (action.type === "REMOVE") {
+        let updatedItems;
+        for (let i = 0; i < state.items.length; i++) {
+            if (action.id === state.items[i].id) {
+                if (state.items[i].amount > 1) {
+                    const updatedTotalAmount =
+                        state.totalAmount - state.items[i].price * 1;
+                    const updatedAmount = state.items[i].amount - 1;
+                    updatedItems = [...state.items];
+                    updatedItems[i].amount = updatedAmount; //take the old item in the items array and update it with the new item
+                    return {
+                        items: updatedItems,
+                        totalAmount: updatedTotalAmount,
+                    };
+                } else {
+                    let updatedTotalAmount =
+                        state.totalAmount - state.items[i].price * 1;
+                    function isMinusZero(value) {
+                        return 1 / value === -Infinity;
+                    }
+                    if (isMinusZero && state.items.length === 1) {
+                        updatedTotalAmount = 0;
+                    }
+                    isMinusZero(0); // false
+                    isMinusZero(-0); // true
+                    updatedItems = [...state.items];
+                    updatedItems.splice(i, 1);
+                    return {
+                        items: updatedItems,
+                        totalAmount: updatedTotalAmount,
+                    };
+                }
+            }
+        }
+
+        // const existingCartItemIndex = state.items.findIndex(
+        //     (item) => item.id === action.id
+        // );
+        // const existingItem = state.items[existingCartItemIndex];
+        // const updatedTotalAmount = state.totalAmount - existingItem.price;
+        // let updatedItems;
+        // if (existingItem.amount === 1) {
+        //     updatedItems = state.items.filter((item) => item.id !== action.id);
+        // } else {
+        //     const updatedItem = {
+        //         ...existingItem,
+        //         amount: existingItem.amount - 1,
+        //     };
+        //     updatedItems = [...state.items];
+        //     updatedItems[existingCartItemIndex] = updatedItem;
+        // }
+        // return { items: updatedItems, amount: updatedTotalAmount };
     }
     return defaultCartState;
 };

@@ -4,6 +4,7 @@ import UserCartContext from "../../store/user-cart-context";
 import Modal from "../UI/Modal";
 
 import classes from "./Cart.module.css";
+import CartContext from "../../store/cart-context";
 
 const Cart = (props) => {
     const userCartCtx = useContext(UserCartContext);
@@ -13,11 +14,15 @@ const Cart = (props) => {
     };
 
     const totalAmount = `€${userCartCtx.totalAmount.toFixed(2)}`;
-    const hasItems = userCartCtx.length > 0;
+    const hasItems = userCartCtx.items.length > 0;
 
-    const cartItemRemoveHandler = (id) => {};
+    const cartItemRemoveHandler = (id) => {
+        userCartCtx.removeItem(id);
+    };
 
-    const cartItemAddHandler = (item) => {};
+    const cartItemAddHandler = (item) => {
+        userCartCtx.addItem({ ...item, amount: 1 });
+    };
 
     const cartItems = (
         <ul className={classes.cartItems}>
