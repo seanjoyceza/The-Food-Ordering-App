@@ -1,26 +1,35 @@
 import React, { useContext } from "react";
 import CartItem from "./CartItem";
-import CartContext from "../../store/cart-context";
+import UserCartContext from "../../store/user-cart-context";
 import Modal from "../UI/Modal";
 
 import classes from "./Cart.module.css";
 
 const Cart = (props) => {
+    const userCartCtx = useContext(UserCartContext);
+
     const orderHandler = () => {
         console.log("Ordering...");
     };
 
-    const cartCtx = useContext(CartContext);
+    const totalAmount = `€${userCartCtx.totalAmount.toFixed(2)}`;
+    const hasItems = userCartCtx.length > 0;
+
+    const cartItemRemoveHandler = (id) => {};
+
+    const cartItemAddHandler = (item) => {};
+
     const cartItems = (
         <ul className={classes.cartItems}>
-            {cartCtx.cartMeals.map((meal) => {
+            {userCartCtx.items.map((item) => {
                 return (
                     <CartItem
-                        key={Math.random()}
-                        name={meal.name}
-                        description={meal.description}
-                        price={meal.price}
-                        amount={meal.amount}
+                        key={item.id}
+                        name={item.name}
+                        price={item.price}
+                        amount={item.amount}
+                        onRemove={cartItemRemoveHandler.bind(null, item.id)}
+                        onAdd={cartItemAddHandler.bind(null, item)}
                     />
                 );
             })}
@@ -29,13 +38,10 @@ const Cart = (props) => {
 
     return (
         <Modal onClose={props.onClose}>
-            {cartCtx.cartMeals.length === 0 && <h2>Your cart is empty!</h2>}
-            {cartCtx.cartMeals.length > 0 && cartItems}
+            {cartItems}
             <div className={classes.total}>
-                {cartCtx.cartMeals.length > 0 && <div>Total Amount</div>}
-                {cartCtx.cartMeals.length > 0 && (
-                    <div>€ {cartCtx.priceState}</div>
-                )}
+                <span>Total Amount</span>
+                <span>{totalAmount}</span>
             </div>
             <div className={classes.actions}>
                 <button
@@ -44,7 +50,7 @@ const Cart = (props) => {
                 >
                     Close
                 </button>
-                {cartCtx.cartMeals.length > 0 && (
+                {hasItems && (
                     <button className={classes.button} onClick={orderHandler}>
                         Order
                     </button>
